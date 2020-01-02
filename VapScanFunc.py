@@ -19,12 +19,13 @@ import matplotlib.pyplot as plt
 
 def InitiateResource():
     VISAInstance=pyvisa.ResourceManager('@py')
-    ResourceList=VISAInstance.list_resources()
-    print(ResourceList)
-    for index in range(len(ResourceList)):
-        print("Device number " + str(index) + " - " + ResourceList[index])
-    DeviceNumber = input("Which device would you like to use? ")
-    resourceName=ResourceList[int(DeviceNumber)]
+    #ResourceList=VISAInstance.list_resources()
+    #print(ResourceList)
+    #for index in range(len(ResourceList)):
+    #    print("Device number " + str(index) + " - " + ResourceList[index])
+    #DeviceNumber = input("Which device is the power supply? ")
+    #resourceName=ResourceList[int(DeviceNumber)]
+    resourceName="USB0::65535::37168::602361010736720001::0::INSTR"
     Resource = VISAInstance.open_resource(resourceName)#,write_termination='\n',read_termination='\r')
     print(Resource.query("*IDN?"))
     print("Set remote access")

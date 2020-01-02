@@ -6,10 +6,14 @@ import time
 import math
 from ThorlabsPM100 import ThorlabsPM100, USBTMC
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 #Need to allow permission: sudo chown inqnet4:inqnet4 /dev/usbtmc0
 
-inst = USBTMC(device="/dev/usbtmc0")
-powermeter = ThorlabsPM100(inst=inst)
+mpl.rcParams["savefig.directory"] = os.chdir(os.path.dirname("/home/inqnet4/Desktop/CQNET/IntensityModulator"))
+
+
+
+
 
 db = pymysql.connect(host = "192.168.0.125", #Wired IPv4 Address
 					user ="INQNET4", # this user only has access to CP
@@ -19,6 +23,16 @@ db = pymysql.connect(host = "192.168.0.125", #Wired IPv4 Address
 					#port = 5025,
 					cursorclass=pymysql.cursors.DictCursor) #name of the data
 
+
+
+
+#inst = USBTMC(device="/dev/usbtmc1")
+#powermeter = ThorlabsPM100(inst=inst)
+VISAInstance=pyvisa.ResourceManager('@py')
+resourceName='USB0::4883::32888::P0023460::0::INSTR'
+inst=VISAInstance.open_resource(resourceName)
+print(inst.ask("*IDN?"))
+powermeter = ThorlabsPM100(inst=inst)
 #ChannelNumber=2
 numV=400
 Vmin=0 #in Volts
@@ -27,8 +41,11 @@ Vscan = 0.05
 VISAInstance=pyvisa.ResourceManager('@py')
 Resource=InitiateResource()
 
-channelNum = input("Which channel is connected to DC Bias? ")
+
+channelNum = 2
 ChannelNumber=int(channelNum)
+
+
 
 cur = db.cursor()
 backup = False
@@ -75,7 +92,7 @@ try:
 		vMeas = float(Resource.query("MEAS:VOLT?").rstrip())
 		Vin.append(vMeas)
 		values[3]=str(vMeas)
-		p=10**9 * powermeter.read
+		p=10**9*powermeter.read
 		P.append(p)
 		values[4]="{0:.3f}".format(p)
 		line=' {0:>6} | {1:>6} | {2:>6} | {3:>6} | {4:>6} '.format(*values)
@@ -104,7 +121,7 @@ try:
 	axs.set_xlabel("Applied Voltage (V)")
 	axs.set_ylabel(r"Power ($n W$)")
 	figname="InitScan.png"
-	plt.savefig(figname)
+	#plt.savefig(figname)
 
 
 	PminIndex = np.where(P==Pmin)
@@ -120,7 +137,7 @@ try:
 	SetVoltage(Resource,ChannelNumber,Va_minP)
 	time.sleep(10)
 	print("Vin after setting Va for min P: ",float(Resource.query("MEAS:VOLT?").rstrip()))
-	print("P: ",10**9*powermeter.read)
+	print("P (nW): ",10**9*powermeter.read)
 	starttime=datetime.now()
 	curtime=starttime
 	#Ptot=[]
@@ -140,7 +157,7 @@ try:
 			values[1]=str(datetime.now())
 			values[2]="{0:.3f}".format(Va_minP)
 			values[3] = str(vMeas)
-			p=10**9*powermeter.read
+			p=10**9 * powermeter.read
 			values[4]="{0:.3f}".format(p)
 			line=' {0:>6} | {1:>6} | {2:>6} | {3:>6} | {4:>6} '.format(*values)
 			print(line)
@@ -193,7 +210,7 @@ try:
 			axs.set_ylabel(r"Power ($n W$)")
 			plt.subplots_adjust(hspace=0.4)
 			figname="FineScan0.png"
-			plt.savefig(figname)
+			#plt.savefig(figname)
 		if n == 5:
 			fig, axs = plt.subplots(1,1,num="11")
 			axs.plot(Vapplied,P)
@@ -202,7 +219,7 @@ try:
 			axs.set_ylabel(r"Power ($n W$)")
 			plt.subplots_adjust(hspace=0.4)
 			figname="FineScan1.png"
-			plt.savefig(figname)
+			#plt.savefig(figname)
 		if n == 10:
 			fig, axs = plt.subplots(1,1,num="12")
 			axs.plot(Vapplied,P)
@@ -211,13 +228,13 @@ try:
 			axs.set_ylabel(r"Power ($n W$)")
 			plt.subplots_adjust(hspace=0.4)
 			figname="FineScan2.png"
-			plt.savefig(figname)
+			#plt.savefig(figname)
 		n=n+1
-		time.sleep(1)
+		time.sleep(3)
 except KeyboardInterrupt:
 	print("")
 	print("Quit")
-	#DisableLVOutput(Resource)
+	DisableLVOutput(inst)
 if backup:
 	txtFile.close()
 plt.show()
