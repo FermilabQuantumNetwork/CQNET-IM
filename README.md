@@ -46,9 +46,13 @@ To install python packages, use:
 * `python3 -m pip install --user <package1> <package2> ...`
 
 ### Tips
-* For `runVapScan.py` and `runVapScan2D.py`, set the voltage ranges for the initial scans to be greater than Vpi to avoid power minima at the endpoints of the scan range
+* If you are using the USBTMC driver to connect to the powermeter (via USB), you may need to first execute the terminal command: 
+```sudo chown <username>:<username> /dev/<device folder>```
+   - You can check for the device folder by executing `ls /dev` and unplugging/replugging in the USB into the computer.
+   - The device folder names are typically named e.g. `usbtmc0` or `usbtmc1`
+* For `runIMFeedback1D.py` and `runIMFeedback2D.py`, set the voltage ranges for the initial scans to be greater than Vpi to avoid power minima at the endpoints of the scan range
 
-##### For other tips and useful commands for getting started, see the CQNET repo's README.
+#### For other tips and useful commands for getting started, see the CQNET repo's README.
 
 ---
 This code was written by Sam Davis at Caltech. Contact me at s1dav1s@alumni.stanford.edu if you have any questions.
