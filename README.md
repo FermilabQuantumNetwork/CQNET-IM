@@ -46,7 +46,7 @@ To install python packages, use:
 * `python3 -m pip install --user <package1> <package2> ...`
 
 ### Tips
-* For `runVapScan.py` and `runVapScan2D.py`, set the voltage ranges for the initial scans to be greater than $V_\pi$ to avoid power minima at the endpoints of the scan range
+* For `runVapScan.py` and `runVapScan2D.py`, set the voltage ranges for the initial scans to be greater than ```math V_\pi``` to avoid power minima at the endpoints of the scan range
 
 ##### For other tips and useful commands for getting started, see the CQNET repo's README.
 
