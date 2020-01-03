@@ -23,7 +23,6 @@ import math
 from ThorlabsPM100 import ThorlabsPM100, USBTMC
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-#Need to allow permission: sudo chown inqnet4:inqnet4 /dev/usbtmc0
 
 #Sets directory for saving figures produced by this script
 mpl.rcParams["savefig.directory"] = os.chdir(os.path.dirname("/home/inqnet4/Desktop/CQNET/IntensityModulator"))
@@ -35,7 +34,7 @@ db = pymysql.connect(host="<IP ADDRESS>",  #Replace <IP ADDRESS> with the IP of 
 					 passwd="<PASSWORD>",  #Replace <PASSWORD> with your password
 					 database="teleportcommission",
 					 charset='utf8mb4',
- 					 cursorclass=pymysql.cursors.DictCursor)
+					 cursorclass=pymysql.cursors.DictCursor)
 
 
 
@@ -115,7 +114,7 @@ try:
 		line=' {0:>6} | {1:>6} | {2:>6} | {3:>6} | {4:>6} '.format(*values)
 		print(line)
 		if backup:
-		     txtFile.write(line+"\n")
+			 txtFile.write(line+"\n")
 		#SQL command to insert data into database
 		query="INSERT INTO IM(datetime, DCVap, DCVin, P) values(NOW(), +"+values[2]+","+values[3]+","+values[4]+");"
 		cur.execute(query)
@@ -156,7 +155,7 @@ try:
 	print("Va for max P: ",Va_maxP)
 	print("Pmax: ",Pmax)
 
-	#Set powersupply voltage to max power
+	#Set powersupply voltage to min power
 	SetVoltage(Resource,ChannelNumber,Va_minP)
 	time.sleep(10) #Wait to settle at the max voltage
 	print("Vin after setting Va for min P: ",float(Resource.query("MEAS:VOLT?").rstrip()))
@@ -168,7 +167,7 @@ try:
 	line='-' * 100
 	print(line)
 	n=0
-	while True: #Fine scan loop
+	while True: #feedback loop
 		curtime = datetime.now()
 		vMeas = float(Resource.query("MEAS:VOLT?").rstrip())
 		#if at least one second has passed, record data:
@@ -176,7 +175,7 @@ try:
 			starttime=curtime
 			values[0]=str(i)
 			values[1]=str(datetime.now())
-			values[2]="{0:.3f}".format(Va_minP) #Channel set voltage
+			values[2]="{0:.3f}".format(Va_minP) #Voltage channel setpoint
 			values[3] = str(vMeas) #Channel voltage as reported by power supply
 			p=10**9 * powermeter.read #Measure power from powermeter
 			values[4]="{0:.3f}".format(p)

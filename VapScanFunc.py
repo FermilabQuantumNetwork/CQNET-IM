@@ -13,7 +13,6 @@ import time
 import numpy as np
 import getpass
 import os
-import subprocess as sp
 import socket
 import sys
 import glob
