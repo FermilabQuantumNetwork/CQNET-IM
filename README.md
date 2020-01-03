@@ -3,8 +3,8 @@ Code for optimizing the extinction ratio of Bob's intensity modulator.
 
 ## Overview
 1. `VapScanFunc.py` (Python3, Commented, INQNET4) -- Contains functions for remotely controlling Bob's power supply.
-2. `runVapScan.py` (Python3, Commented, INQNET4) -- Runs the power optimization feedback code for the DC Bias pin of Bob's intensity modulator.
-3. `runVapScan2D.py` (Python3, Commented, INQNET4) -- Runs the power optimization feedback code for the DC Bias and ER Tuning pins of Bob's intensity modulator.
+2. `runIMFeedback1D.py` (Python3, Commented, INQNET4) -- Runs the power optimization feedback code for the DC Bias pin of Bob's intensity modulator.
+3. `runIMFeedback2D.py` (Python3, Commented, INQNET4) -- Runs the power optimization feedback code for the DC Bias and ER Tuning pins of Bob's intensity modulator.
 The "Other" folder contains figures, obsolete/older versions of code, etc.
 
 ## Requirements
