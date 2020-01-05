@@ -157,7 +157,7 @@ try:
 
 	#Set powersupply voltage to min power
 	SetVoltage(Resource,ChannelNumber,Va_minP)
-	time.sleep(10) #Wait to settle at the max voltage
+	time.sleep(10) #Wait to settle at the optimal voltage
 	print("Vin after setting Va for min P: ",float(Resource.query("MEAS:VOLT?").rstrip()))
 	print("P (nW): ",10**9*powermeter.read)
 	starttime=datetime.now()
