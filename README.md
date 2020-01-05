@@ -14,7 +14,7 @@ mysql installed, you first need to install it (see https://www.mysql.com/downloa
 
 
 ### Python packages
-Below are listed all the packages that are used in this repo. Many may already be installed on your computer, but otherwise you should install them.
+Below are listed all the packages that are used in this repo. Many may already be installed on your computer, but otherwise you should install them. Some may be redundant.
 #### Python3:
 * pymysql
 * pyvisa
